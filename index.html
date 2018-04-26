@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Wikialien</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/viz.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <!-- SCRIPT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <!-- D3 JS
+  -------------------------------------------------- -->
+  
+    
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+   
+    <div class="row">
+      <!--div class="one-half column" style="margin-top:20%; margin-left:2%; margin-right:2%;">
+        <h4>Aliens inside me</h4>
+        <p>Explore the aliens especies created by humans.</a>.</p>
+      </div-->
+      <div class="row">
+        <div class="nine columns">
+                <h3>The aliens inside me...</h3>
+        </div>
+        <form>
+        <div class="three columns">
+            <label for="exampleEmailInput">Search...</label>
+            <input class="u-full-width" type="text" placeholder="test@mailbox.com" id="exampleEmailInput">
+        </div>
+        </form>
+      </div>
+      <div class="row">
+          <p>Explore the aliens especies created by humans.</p>
+      </div>
+        
+    </div>
+  </div>
+    
+  <!-- .container is main centered wrapper -->
+<div class="container">
+
+  <!-- columns should be the immediate child of a .row -->
+  <div class="row">
+    <div class="nine columns">
+    <svg height="500" width="500"></svg>  
+    </div>
+    <div class="three columns">
+      
+      <div class="corners_box">
+        <div class="head_image">
+          <div class="ubicator">
+             <img class="crop" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" alt="lalalala" />
+             <!--img class="crop" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREgmdwukvwbZisaDgSSoBJlwAci3FvcXsa2MZ_jSql8ZLCUDLT" alt="lalalala" /-->
+              
+          </div>
+        </div>
+          
+        <div class="body_desc">
+          ddd
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+<!-- SCRIPT 
+  -------------------------------------------------- -->
+    
+    
+    <script>
+        
+        
+        
+function responsivefy(svg) {
+  // get container + svg aspect ratio
+  var container = d3.select(svg.node().parentNode),
+      width = parseInt(svg.style("width")),
+      height = parseInt(svg.style("height")),
+      aspect = width / height;
+  //console.log("height: ",height,"width:",width);
+  // add viewBox and preserveAspectRatio properties,
+  // and call resize so that svg resizes on inital page load
+  svg.attr("viewBox", "0 0 " + width + " " + height)
+      .attr("preserveAspectRatio", "xMinYMid")
+      .call(resize);
+
+  // to register multiple listeners for same event type,
+  // you need to add namespace, i.e., 'click.foo'
+  // necessary if you call invoke this function for multiple svgs
+  // api docs: https://github.com/mbostock/d3/wiki/Selections#on
+  d3.select(window).on("resize." + container.attr("id"), resize);
+
+  // get width of container and resize svg to fit it
+  function resize() {
+      var targetWidth = parseInt(container.style("width"));
+      svg.attr("width", targetWidth);
+      svg.attr("height", Math.round(targetWidth / aspect));
+  }
+}    
+        
+        
+     
+
+var svg = d3.select("svg"),
+    margin = 10,
+    diameter = svg.attr("width"),
+    g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+        
+//responsivefy(svg);
+
+var color = d3.scaleLinear()
+    .domain([-1, 5])
+    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+    .interpolate(d3.interpolateHcl);
+
+var pack = d3.pack()
+    .size([diameter - margin, diameter - margin])
+    .padding(2);
+
+        
+/* ********************************************************************** */
+/* ********************************************************************** */   
+/* ***************** MONTAR JSON A PARTIR DE ESTRUCTURA CSV ************* */
+/* ********************************************************************** */
+/* ********************************************************************** */ 
+        
+d3.csv("data/species5.csv", function(error, data) {
+      if (error) throw error;
+    
+    
+          var root = {};
+          var children = new Array(0);
+          var subchildren = new Array(0);
+          //console.log("ANTES DE GET CSV"+data[0].target);
+          // Create nodes for each unique source and target.
+          data.forEach(function(dato) {
+            //console.log("DATO",dato,"xxx.life",dato.life,"xxx.flare",dato.flare);
+            
+            if (dato.life==0 && dato.flare=="OO"){
+                root=dato;
+                root.children=children;
+            }else if (dato.source=="Base"){
+                    //console.log("In 1st if:flare",dato.life,"-",dato.flare);
+                    dato.children = subchildren;
+                    root.children.push(dato); /*subimos dato con children inicializado */
+            
+            }else{
+                    
+                    //console.log("In 2nd if:flare",root.children[0].target,"-",dato.source);
+                    //console.log("In 2nd if:flare",root.children[1].target,"-",dato.source);
+                 
+                    if (root.children[0].target==dato.source){
+                         root.children[0].children.push(dato);
+                    }else if (root.children[1].target==dato.source){
+                        root.children[1].children.push(dato);
+                    }
+                
+            }
+          });
+          
+          console.log("ROOT *********************:",root);
+
+  /* ********************************************************************** */
+  /* ********************************************************************** */
+  /* ********************************************************************** */
+  /* ********************************************************************** */ 
+
+  root = d3.hierarchy(root)
+      .sum(function(d) { return d.life; }) /*size*/
+      .sort(function(a, b) { return b.value - a.value; });
+
+  var focus = root,
+      nodes = pack(root).descendants(),
+      view;
+    
+    
+  function hovered(hover,img,desc) {
+    
+    console.log("IMG",img,"--",desc);
+    d3.select(".crop").attr("src",img);
+    d3.select(".body_desc").html(desc);  
+      
+    //return function(d) {
+    //d3.selectAll(d.ancestors().map(function(d) { return d.node; })).classed("node--leaf", hover);
+    //};
+  }
+    
+  function change_info(img_route,description){ 
+    // console.log("IMG",img_route,"--",description);
+    d3.select(".crop").attr("src",img_route);
+    d3.select(".body_desc").html(description);
+
+    }
+
+  var circle = g.selectAll("circle")
+    .data(nodes)
+    .enter().append("g").append("circle")
+      .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
+      .style("fill", function(d) { return d.children ? color(d.depth) : null; })
+      .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation() }) /* , d3.event.stopPropagation() */
+      .attr("prueba","3")
+      .on("mouseover", function(d,i){
+          console.log("DATO",d);
+          hovered(true, d.data.img_route,d.data.desc);
+      })
+      .on("mouseout", function(d,i){
+          console.log("DATO",d);
+          hovered(false, d.data.img_route,d.data.desc);
+      });
+  
+
+  var text = g.selectAll("text")
+    .data(nodes)
+    .enter().append("text")
+      .attr("class", "textito")
+      .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
+      .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
+      .text(function(d) { return d.data.name; });
+
+  var node = g.selectAll("circle,text");
+
+  svg
+      .style("background", "#FFF")
+      .on("click", function() { zoom(root); });
+
+  zoomTo([root.x, root.y, root.r * 2 + margin]);
+
+  function zoom(d) {
+    var focus0 = focus; focus = d;
+
+    var transition = d3.transition()
+        .duration(d3.event.altKey ? 7500 : 750)
+        .tween("zoom", function(d) {
+          var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+          return function(t) { zoomTo(i(t)); };
+        });
+
+    transition.selectAll("text")
+      .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+        .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
+        .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+        .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+  }
+
+  function zoomTo(v) {
+    var k = diameter / v[2]; view = v;
+    node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
+    circle.attr("r", function(d) { return d.r * k; });
+  }
+});
+
+</script>    
+
+<p title="Add an specie"> 
+<a href="#" class="float">
+<i class="fa fa-plus my-float" title="Add an specie"></i>
+</a>  
+</p>   
+    
+</body>
+</html>
